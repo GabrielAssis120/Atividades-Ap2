@@ -1,0 +1,31 @@
+typedef struct {
+    char nome[50];
+    int idade;
+    float salario;
+} Funcionario;
+
+void cadastrarFuncionario(Funcionario *funcionario) {
+    printf("\nCadastro de Funcionario\n");
+    printf("Digite o nome do funcionario: ");
+    scanf("%s", funcionario->nome);
+
+    printf("Digite a idade do funcionario: ");
+    scanf("%d", &funcionario->idade);
+
+    printf("Digite o salario do funcionario: ");
+    scanf("%f", &funcionario->salario);
+}
+
+void exibirFuncionario(const Funcionario *funcionario) {
+    printf("\nInformacoes do Funcionario\n");
+    printf("Nome: %s\n", funcionario->nome);
+    printf("Idade: %d\n", funcionario->idade);
+    printf("Salario: %.2f\n", funcionario->salario);
+}
+int main() {
+    Funcionario funcionario;
+
+    cadastrarFuncionario(&funcionario);
+    exibirFuncionario(&funcionario);
+
+}
