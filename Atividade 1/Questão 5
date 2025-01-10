@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Contato {
+    char nome[50];
+    char telefone[15];
+    char email[50];
+};
+
+int main() {
+    struct Contato contato;
+
+    printf("Digite o nome do contato: ");
+    scanf("%[^\n]%*c", contato.nome);
+
+    printf("Digite o telefone do contato: ");
+    scanf("%[^\n]%*c", contato.telefone);
+
+    printf("Digite o email do contato: ");
+    scanf("%[^\n]%*c", contato.email);
+
+    printf("\nInformacoes do Contato Cadastrado:\n");
+    printf("Nome: %s\n", contato.nome);
+    printf("Telefone: %s\n", contato.telefone);
+    printf("Email: %s\n", contato.email);
+}
