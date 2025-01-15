@@ -1,0 +1,72 @@
+#ifndef CALCULADORA_H_INCLUDED
+#define CALCULADORA_H_INCLUDED
+
+
+
+#endif // CALCULADORA_H_INCLUDED
+float soma(float a, float b) {
+    return a + b;
+}
+
+
+float subtracao(float a, float b) {
+    return a - b;
+}
+
+
+float multiplicacao(float a, float b) {
+    return a * b;
+}
+
+
+float divisao(float a, float b) {
+    if (b != 0) {
+        return a / b;
+    } else {
+return 1;
+    }
+}
+//pasta .h
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+____________________________________________________________________________________________________________________________________________________________________
+//main.c
+#include <stdio.h>
+#include <stdlib.h>
+#include "calculadora.h"
+
+int main() {
+ float a, b, r;
+ int operador;
+
+ printf("digite o primeiro numero a ser calculado: ");
+scanf("%f", &a);
+printf("digite o segundo numero a ser calculado: ");
+scanf("%f", &b);
+
+ printf("digite qual operacao deseja:\n");
+ printf("1-soma\n 2-subitracao\n 3-multiplicacao\n 4-divisao\n");
+scanf("%d", &operador);
+
+switch (operador) {
+        case 1:
+            r = soma(a, b);
+            printf("Resultado: %.2f\n", r);
+            break;
+        case 2:
+            r = subtracao(a, b);
+            printf("Resultado: %.2f\n", r);
+            break;
+        case 3:
+            r = multiplicacao(a, b);
+            printf("Resultado: %.2f\n", r);
+            break;
+        case 4:
+            r = divisao(a, b);
+            if (b != 0) {
+                printf("Resultado: %.2f\n", r);
+            }
+            break;
+        default:
+            printf("Operacao invalida!\n");
+    }
+}
