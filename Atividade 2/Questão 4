@@ -1,0 +1,144 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct {
+    int numero;
+    int reservado;
+    char nome[50];
+} Quarto;
+
+Quarto quartos[10];
+
+void carregar() {
+    FILE *file = fopen("reservas.txt", "r");
+    if (file == NULL) {
+        printf("Arquivo nao encontrado\n");
+        return;
+    }
+
+    for (int i = 0; i < 10; i++) {
+        fscanf(file, "%d %d %[^\n]", &quartos[i].numero, &quartos[i].reservado, quartos[i].nome);
+    }
+
+    fclose(file);
+}
+
+void salvar() {
+    FILE *file = fopen("reservas.txt", "w");
+    if (file == NULL) {
+        printf("Erro para salvar os dados.\n");
+        return;
+    }
+
+    for (int i = 0; i < 10; i++) {
+        fprintf(file, "%d %d %s\n", quartos[i].numero, quartos[i].reservado, quartos[i].nome);
+    }
+
+    fclose(file);
+}
+
+void iniciar() {
+    for (int i = 0; i < 10; i++) {
+        quartos[i].numero = i + 1;
+        quartos[i].reservado = 0;
+        strcpy(quartos[i].nome, "");
+    }
+}
+
+void Disponibilidade() {
+    printf("\nQuartos disponiveis:\n");
+    for (int i = 0; i < 10; i++) {
+        if (!quartos[i].reservado) {
+            printf("Quarto %d\n", quartos[i].numero);
+        }
+    }
+}
+
+
+void reservar() {
+    int Nquarto;
+    char nomes[50];
+
+    printf("\nDigite o numero do quarto que deseja reservar: ");
+    scanf("%d", &Nquarto);
+
+    if (Nquarto < 1 || Nquarto > 10) {
+        printf("Numero de quarto invalido.\n");
+        return;
+    }
+
+    if (quartos[Nquarto - 1].reservado) {
+        printf("Quarto %d ja esta reservado.\n", Nquarto);
+        return;
+    }
+
+    printf("Digite o nome do cliente: ");
+    scanf("%s", nomes);
+
+    quartos[Nquarto - 1].reservado = 1;
+    strcpy(quartos[Nquarto - 1].nome, nomes);
+
+    printf("Quarto %d reservado para %s.\n", Nquarto, nomes);
+    salvar();
+}
+
+
+void cancelar() {
+    int Nquarto;
+
+    printf("\nDigite o numero do quarto que deseja cancelar a reserva: ");
+    scanf("%d", &Nquarto);
+
+    if (Nquarto < 1 || Nquarto > 10) {
+        printf("Numero de quarto invalido.\n");
+        return;
+    }
+
+    if (!quartos[Nquarto - 1].reservado) {
+        printf("Quarto %d nao esta reservado.\n", Nquarto);
+        return;
+    }
+
+    quartos[Nquarto - 1].reservado = 0;
+    strcpy(quartos[Nquarto - 1].nome, "");
+
+    printf("Reserva do quarto %d cancelada.\n", Nquarto);
+
+    salvar();
+}
+
+int main() {
+    int opcao;
+
+    carregar();
+
+    do {
+        printf("\nSistema de Reservas de Hotel\n");
+        printf("1. Exibir disponibilidade\n");
+        printf("2. Reservar quarto\n");
+        printf("3. Cancelar reserva\n");
+        printf("4. Sair\n");
+        printf("Escolha uma opcao: ");
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                Disponibilidade();
+                break;
+            case 2:
+                reservar();
+                break;
+            case 3:
+                cancelar();
+                break;
+            case 4:
+                printf("Encerrando o sistema.\n");
+                break;
+            default:
+                printf("Opcao invalida.\n");
+        }
+    } while (opcao != 4);
+
+    return 0;
+}
