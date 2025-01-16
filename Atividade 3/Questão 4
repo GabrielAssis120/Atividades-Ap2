@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int x;
+    int y;
+} Ponto;
+
+void atualizarPonto(Ponto *p, int novoX, int novoY) {
+    p->x = novoX;
+    p->y = novoY;
+}
+
+int main() {
+    Ponto ponto1;
+    printf("Digite as coordenadas iniciais do ponto:\n");
+    printf("Digite o valor de x: ");
+    scanf("%d", &ponto1.x);
+
+    printf("Digite o valor de y: ");
+    scanf("%d", &ponto1.y);
+
+    printf("\nPonto antes de atualizar: (%d, %d)\n", ponto1.x, ponto1.y);
+
+
+    int novoX, novoY;
+    printf("Digite as novas coordenadas para o ponto:\n");
+    printf("Digite o valor de x: ");
+    scanf("%d", &novoX);
+
+    printf("Digite o valor de y: ");
+    scanf("%d", &novoY);
+
+    atualizarPonto(&ponto1, novoX, novoY);
+
+    printf("\nPonto depois de atualizar: (%d, %d)\n", ponto1.x, ponto1.y);
+}
