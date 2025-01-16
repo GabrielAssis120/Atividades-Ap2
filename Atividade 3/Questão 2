@@ -1,0 +1,30 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+int somaArray(int *ar, int tamanho) {
+    int soma = 0;
+    for (int i = 0; i < tamanho; i++) {
+        soma += *(ar + i);
+    }
+    return soma;
+}
+
+int main() {
+    int tamanho;
+
+    printf("Digite o tamanho: ");
+    scanf("%d", &tamanho);
+
+    int ar[tamanho];
+
+    printf("Digite os elementos :\n");
+    for (int i = 0; i < tamanho; i++) {
+        printf("Elemento %d: ", i + 1);
+        scanf("%d", &ar[i]);
+    }
+
+    int resultado = somaArray(ar, tamanho);
+
+    printf("A soma dos elementos do array e: %d\n", resultado);
+}
+
