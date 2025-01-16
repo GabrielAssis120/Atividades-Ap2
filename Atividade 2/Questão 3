@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void cadastrarUsuario() {
+    char usuario[50], senha[50];
+    FILE *arq = fopen("usuarios.txt", "a");
+
+    if (arq == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    printf("Digite o nome de usuario: ");
+    scanf("%s", usuario);
+
+    printf("Digite a senha: ");
+    scanf("%s", senha);
+
+    fprintf(arq, "%s %s\n", usuario, senha);
+    fclose(arq);
+
+    printf("Usuario cadastrado!\n");
+}
+
+void autenticarUsuario() {
+    char usuario[50], senha[50], usuarioArq[50], senhaArq[50];
+    int autenticado = 0;
+    FILE *arq = fopen("usuarios.txt", "r");
+
+    if (arq == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    printf("Digite o nome de usuario: ");
+    scanf("%s", usuario);
+
+    printf("Digite a senha: ");
+    scanf("%s", senha);
+
+    while (fscanf(arq, "%s %s", usuarioArq, senhaArq) == 2) {
+        if (strcmp(usuario, usuarioArq) == 0 && strcmp(senha, senhaArq) == 0) {
+            autenticado = 1;
+            break;
+        }
+    }
+
+    fclose(arq);
+
+    if (autenticado) {
+        printf("Autenticacao realisada!\n");
+    } else {
+        printf("Usuario ou senha invalidos.\n");
+    }
+}
+
+int main() {
+    int opcao;
+
+    do {
+        printf("\nSistema de Login\n");
+        printf("1. Cadastrar usuario\n");
+        printf("2. Autenticar usuario\n");
+        printf("3. Sair\n");
+        printf("Escolha uma opcao: ");
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                cadastrarUsuario();
+                break;
+            case 2:
+                autenticarUsuario();
+                break;
+            case 3:
+                printf("Fechando o sistema\n");
+                break;
+            default:
+                printf("invalido. Tente novamente.\n");
+        }
+    } while (opcao != 3);
+
+    return 0;
+}
