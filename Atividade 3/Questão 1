@@ -1,0 +1,30 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+void trocar(int *a, int *b) {
+    int temp;
+
+    temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main() {
+    int num1, num2;
+
+    printf("Digite o primeiro valor: ");
+    scanf("%d", &num1);
+
+    printf("Digite o segundo valor: ");
+    scanf("%d", &num2);
+
+    printf("\nAntes da troca:\n");
+    printf("num1 = %d, num2 = %d\n", num1, num2);
+
+    trocar(&num1, &num2);
+
+    printf("\nDepois da troca:\n");
+    printf("num1 = %d, num2 = %d\n", num1, num2);
+
+}
+
