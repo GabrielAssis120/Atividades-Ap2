@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int main() {
+    FILE *arquivo;
+
+    arquivo = fopen("saida.txt", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao criar o arquivo.\n");
+        return 1;
+    }
+
+
+    fprintf(arquivo, " primeira linha de texto.\n");
+    fprintf(arquivo, "segunda linha de texto.\n");
+    fprintf(arquivo, "terceira linha de texto.\n");
+
+
+    fclose(arquivo);
+
+    printf("Texto escrito no arquivo 'saida.txt' com sucesso.\n");
+
+    return 0;
+}
