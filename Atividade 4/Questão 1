@@ -20,6 +20,4 @@ int main() {
     fclose(arquivo);
 
     printf("Texto escrito no arquivo 'saida.txt' com sucesso.\n");
-
-    return 0;
 }
