@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <stdio.h>
+
+int main() {
+    FILE *arquivo;
+
+    arquivo = fopen("saida.txt", "a");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
+    }
+
+
+    fprintf(arquivo, "quarta linha de texto.\n");
+    fprintf(arquivo, "quinta linha de texto.\n");
+
+
+    fclose(arquivo);
+
+    printf("Novas linhas adicionadas ao arquivo 'saida.txt'.\n");
+
+}
