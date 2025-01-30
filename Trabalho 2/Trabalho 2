@@ -1,0 +1,174 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct {
+    char nome[50];
+    int codigo;
+    float preco;
+    int quantidade;
+} Produto;
+
+typedef struct {
+    Produto *produtos;
+    int tamanho;
+} Inventario;
+
+int main() {
+    Inventario inventario;
+    inicializarInventario(&inventario);
+
+    int opcao;
+    carregarDeArquivo(&inventario, "inventario.txt");
+
+    do {
+        printf("\n=== Gerenciamento de Inventario ===\n");
+        printf("1. Adicionar Produto\n");
+        printf("2. Listar Produtos\n");
+        printf("3. Buscar Produto\n");
+        printf("4. Salvar e Sair\n");
+        printf("Escolha uma opcao: ");
+        scanf("%d", &opcao);
+        getchar();
+
+        switch (opcao) {
+            case 1:
+                adicionarProduto(&inventario);
+                break;
+            case 2:
+                listarProdutos(&inventario);
+                break;
+            case 3:
+                buscarProduto(&inventario);
+                break;
+            case 4:
+                salvarEmArquivo(&inventario, "inventario.txt");
+                printf("Inventario salvo. Saindo...\n");
+                break;
+            default:
+                printf("Opcao invalida!\n");
+        }
+    } while (opcao != 4);
+
+    liberarMemoria(&inventario);
+    return 0;
+}
+
+void inicializarInventario(Inventario *inv) {
+    inv->produtos = NULL;
+    inv->tamanho = 0;
+}
+
+void adicionarProduto(Inventario *inv) {
+    inv->tamanho++;
+    inv->produtos = realloc(inv->produtos, inv->tamanho * sizeof(Produto));
+
+    if (inv->produtos == NULL) {
+        printf("Erro de alocacao de memoria.\n");
+        exit(1);
+    }
+
+    Produto *novoProduto = &inv->produtos[inv->tamanho - 1];
+
+    printf("Digite o nome do produto: ");
+    fgets(novoProduto->nome, 50, stdin);
+    novoProduto->nome[strcspn(novoProduto->nome, "\n")] = '\0';
+
+    printf("Digite o codigo do produto: ");
+    scanf("%d", &novoProduto->codigo);
+    printf("Digite o preco do produto: ");
+    scanf("%f", &novoProduto->preco);
+    printf("Digite a quantidade disponivel: ");
+    scanf("%d", &novoProduto->quantidade);
+    getchar();
+
+    printf("Produto adicionado com sucesso!\n");
+}
+
+void listarProdutos(const Inventario *inv) {
+    if (inv->tamanho == 0) {
+        printf("Nenhum produto cadastrado.\n");
+        return;
+    }
+
+    printf("\n=== Lista de Produtos ===\n");
+    for (int i = 0; i < inv->tamanho; i++) {
+        printf("Produto %d:\n", i + 1);
+        printf("Nome: %s\n", inv->produtos[i].nome);
+        printf("Codigo: %d\n", inv->produtos[i].codigo);
+        printf("Preco: R$ %.2f\n", inv->produtos[i].preco);
+        printf("Quantidade: %d\n", inv->produtos[i].quantidade);
+        printf("------------------------\n");
+    }
+}
+
+void buscarProduto(const Inventario *inv) {
+    if (inv->tamanho == 0) {
+        printf("Nenhum produto cadastrado.\n");
+        return;
+    }
+
+    int codigo;
+    printf("Digite o codigo do produto a buscar: ");
+    scanf("%d", &codigo);
+    getchar();
+
+    for (int i = 0; i < inv->tamanho; i++) {
+        if (inv->produtos[i].codigo == codigo) {
+            printf("\nProduto encontrado!\n");
+            printf("Nome: %s\n", inv->produtos[i].nome);
+            printf("Codigo: %d\n", inv->produtos[i].codigo);
+            printf("Preco: R$ %.2f\n", inv->produtos[i].preco);
+            printf("Quantidade: %d\n", inv->produtos[i].quantidade);
+            return;
+        }
+    }
+    printf("Produto nao encontrado.\n");
+}
+
+void salvarEmArquivo(const Inventario *inv, const char *arquivo) {
+    FILE *file = fopen(arquivo, "w");
+    if (file == NULL) {
+        printf("Erro ao salvar o arquivo.\n");
+        return;
+    }
+
+    fprintf(file, "%d\n", inv->tamanho);
+    for (int i = 0; i < inv->tamanho; i++) {
+        fprintf(file, "%s\n%d\n%.2f\n%d\n",
+                inv->produtos[i].nome,
+                inv->produtos[i].codigo,
+                inv->produtos[i].preco,
+                inv->produtos[i].quantidade);
+    }
+
+    fclose(file);
+}
+
+void carregarDeArquivo(Inventario *inv, const char *arquivo) {
+    FILE *file = fopen(arquivo, "r");
+    if (file == NULL) {
+        printf("Nenhum arquivo encontrado. Criando um novo inventario.\n");
+        return;
+    }
+
+    int tamanho;
+    fscanf(file, "%d\n", &tamanho);
+    inv->produtos = malloc(tamanho * sizeof(Produto));
+    inv->tamanho = tamanho;
+
+    for (int i = 0; i < tamanho; i++) {
+        fgets(inv->produtos[i].nome, 50, file);
+        inv->produtos[i].nome[strcspn(inv->produtos[i].nome, "\n")] = '\0';
+        fscanf(file, "%d\n", &inv->produtos[i].codigo);
+        fscanf(file, "%f\n", &inv->produtos[i].preco);
+        fscanf(file, "%d\n", &inv->produtos[i].quantidade);
+    }
+
+    fclose(file);
+    printf("Inventario carregado com sucesso!\n");
+}
+
+void liberarMemoria(Inventario *inv) {
+    free(inv->produtos);
+}
